@@ -11,3 +11,6 @@ tema2.o:tema2.asm
 
 clean:
 	rm -rf tema2.o tema2
+
+task1: clean build
+	./tema2 inputs/task1_1.pgm 1
