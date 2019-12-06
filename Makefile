@@ -14,3 +14,6 @@ clean:
 
 task1: clean build
 	./tema2 inputs/task1_1.pgm 1
+
+task2: clean build
+	./tema2 inputs/task2_2.pgm 2

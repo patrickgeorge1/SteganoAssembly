@@ -4,6 +4,7 @@ extern atoi
 extern printf
 extern exit
 extern malloc
+extern free
 
 ; Functions to read/free/print the image.
 ; The image is passed in argv[1].
@@ -26,6 +27,8 @@ section .bss
     img_width:  resd 1
     img_height: resd 1
     revient: resd 1
+    task2msj: resd 1
+    lenOfMsj: resd 1
 
 section .text
 global main
@@ -89,12 +92,80 @@ solve_task1:
     ;TODO Task1
     call hardcode_revient
     call bruteforce_singlebyte_xor
+        push edx
+        call print_image_line
+        pop edx
+        NEWLINE
+        PRINT_UDEC 4, ecx ; key
+        NEWLINE
+        PRINT_UDEC 4, edx ; line
+        NEWLINE
+    call free_revient
     jmp done
 
 solve_task2:
     ; TODO Task2
+    call hardcode_task2msj
+    call hardcode_revient
+    call bruteforce_singlebyte_xor
+    push edx
+        push ecx
+        call transform_key
+        pop ecx
+        mov ecx, eax
+    pop edx
+    inc edx
+
+
+                                                                ; push DWORD[img_height]
+                                                                ; push DWORD[img_width]
+                                                                ; push DWORD[img]
+                                                                ; call print_image
+                                                                ; add esp, 12
+
+  
+                                                            ; mov ecx, 48
+                                                            ; push ecx
+                                                            ; call xor_the_image
+                                                            ; add esp, 4
+
+                                                                ; push DWORD[img_height]
+                                                                ; push DWORD[img_width]
+                                                                ; push DWORD[img]
+                                                                ; call print_image
+                                                                ; add esp, 12
+
+
+    mov DWORD[lenOfMsj], 28
+    push edx
+    call include_message_at_line
+    add esp, 4
+
+    ;                                                             ; NEWLINE
+    ;                                                             ; NEWLINE
+    ;                                                             ; NEWLINE
+
+                                                                ; push DWORD[img_height]
+                                                                ; push DWORD[img_width]
+                                                                ; push DWORD[img]
+                                                                ; call print_image
+                                                                ; add esp, 12
+    
+    push ecx
+    call xor_the_image
+    pop ecx
+
+                                                                push DWORD[img_height]
+                                                                push DWORD[img_width]
+                                                                push DWORD[img]
+                                                                call print_image
+                                                                add esp, 12
+
+
+    call free_task2msj
+    call free_revient
     jmp done
-solve_task3:
+solve_task3:    
     ; TODO Task3
     jmp done
 solve_task4:
@@ -108,16 +179,16 @@ solve_task6:
     jmp done
 
     ; Free the memory allocated for the image.
-done:
-    push DWORD[img]
-    call free_image
-    add esp, 4
+    done:
+        push DWORD[img]
+        call free_image
+        add esp, 4
 
-    ; Epilogue
-    ; Do not modify!
-    xor eax, eax
-    leave
-    ret
+        ; Epilogue
+        ; Do not modify!
+        xor eax, eax
+        leave
+        ret
     
 
 hardcode_revient: ; aloc si hardcodez pe revient pe stiva
@@ -143,6 +214,105 @@ hardcode_revient: ; aloc si hardcodez pe revient pe stiva
     mov [eax + 24], ebx
     lea eax, [eax]
     mov [revient], eax
+    leave
+    ret
+
+free_revient: ; free memory
+    enter 0, 0
+    push DWORD[revient]
+    call free
+    add esp, 4 
+    leave
+    ret
+
+hardcode_task2msj:
+    enter 0, 0
+
+    push 112
+    call malloc
+    add esp, 4
+
+    mov ebx, 67
+    mov [eax], ebx
+    mov ebx, 39
+    mov [eax + 4], ebx
+    mov ebx, 101
+    mov [eax + 8], ebx
+    mov ebx, 115
+    mov [eax + 12], ebx
+    mov ebx, 116
+    mov [eax + 16], ebx
+    mov ebx, 32
+    mov [eax + 20], ebx
+    mov ebx, 117
+    mov [eax + 24], ebx
+    mov ebx, 110
+    mov [eax + 28], ebx
+    mov ebx, 32
+    mov [eax + 32], ebx
+    mov ebx, 112
+    mov [eax + 36], ebx
+    mov ebx, 114
+    mov [eax + 40], ebx
+    mov ebx, 111
+    mov [eax + 44], ebx
+    mov ebx, 118
+    mov [eax + 48], ebx
+    mov ebx, 101
+    mov [eax + 52], ebx
+    mov ebx, 114
+    mov [eax + 56], ebx
+    mov ebx, 98
+    mov [eax + 60], ebx
+    mov ebx, 101
+    mov [eax + 64], ebx
+    mov ebx, 32
+    mov [eax + 68], ebx
+    mov ebx, 102
+    mov [eax + 72], ebx
+    mov ebx, 114
+    mov [eax + 76], ebx
+    mov ebx, 97
+    mov [eax + 80], ebx
+    mov ebx, 110
+    mov [eax + 84], ebx
+    mov ebx, 99
+    mov [eax + 88], ebx
+    mov ebx, 97
+    mov [eax + 92], ebx
+    mov ebx, 105
+    mov [eax + 96], ebx
+    mov ebx, 115
+    mov [eax + 100], ebx
+    mov ebx, 46
+    mov [eax + 104], ebx
+    mov ebx, 0
+    mov [eax + 108], ebx
+
+    lea eax, [eax]
+    mov [task2msj], eax
+    leave
+    ret
+
+free_task2msj:
+    enter 0, 0
+    push DWORD[task2msj]
+    call free
+    add esp, 4 
+    leave
+    ret
+
+transform_key:
+    enter 0, 0
+    push ebx
+        mov eax, [ebp + 8]
+        mov ebx, 2
+        imul ebx
+        add eax, 3
+        mov ebx, 5
+        idiv ebx
+        sub eax, 4
+    pop ebx
     leave
     ret
 
@@ -204,6 +374,7 @@ xor_the_image:  ; cripteaza imaginea cu o key data ca param
     mul edx
     mov ecx, eax
 
+
     mov edx, 0
     xor_another_elem:
         mov eax, [img]
@@ -222,8 +393,6 @@ xor_the_image:  ; cripteaza imaginea cu o key data ca param
         je stop_xor_another_elem
         jmp xor_another_elem
 
-        leave
-        ret
 
 stop_xor_another_elem:
     leave
@@ -377,13 +546,6 @@ pos_revient_on_matrix:  ; fara param, aduce pozitia lui revient in imag daca est
 bruteforce_singlebyte_xor:
     enter 0, 0
 
-        ; push 24
-        ; call xor_the_image
-        ; add esp, 4
-
-        ; call pos_revient_on_matrix
-        ; PRINT_DEC 4, edx
-
     mov ecx, 255
     try_anoother_key:
         push ecx  ; criptez
@@ -407,13 +569,58 @@ bruteforce_singlebyte_xor:
         jmp try_anoother_key
 
     return_bruteforce_singlebyte_xor:
-        push edx
-        call print_image_line
-        pop edx
-        NEWLINE
-        PRINT_UDEC 4, ecx
-        NEWLINE
-        PRINT_UDEC 4, edx
-        NEWLINE
         leave
         ret
+
+include_message_at_pos:  ; il modifica pe eax sa pointeze la prim caracter liber
+    enter 0, 0
+    push ebx
+    push ecx
+    push edx
+        mov eax, [ebp + 8] ; poz
+        mov ecx, 0
+        mov edx, [lenOfMsj]
+        inc_msj_at_next_pos:
+            push ebx
+                mov ebx, [task2msj]
+                lea ebx, [ebx + 4 * ecx]
+                mov ebx, [ebx]
+                ;                                                                             NEWLINE
+                ;                                                                             PRINT_UDEC 4, [eax]
+                mov [eax], ebx 
+            pop ebx
+            add eax, 4
+            inc ecx
+            cmp ecx, edx
+            je stop_include_at_pos
+            jmp inc_msj_at_next_pos
+        stop_include_at_pos:
+    pop edx
+    pop ecx
+    pop ebx
+    leave
+    ret        
+
+include_message_at_line:
+    enter 0, 0
+    pusha
+        mov eax, [img]
+        push edx
+            mov edx, [ebp + 8] ; linia
+            push eax
+                mov eax, [img_width]
+                mul edx
+                mov edx, eax
+                mov eax, 4
+                mul edx
+                mov edx, eax
+            pop eax
+            add eax, edx
+        pop edx
+
+        push eax
+        call include_message_at_pos
+        add esp, 4
+    popa
+    leave
+    ret

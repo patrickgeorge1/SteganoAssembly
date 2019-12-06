@@ -36,7 +36,7 @@ for n in range(1, numTasks + 1):
                 args = f.read()
         proc = os.popen(runExec + " inputs/task" + str(n) + "_" + str(t) + ".pgm " + 
                         str(n) + " " + args)
-        # print();
+        # print()
         # print(runExec + " inputs/task" + str(n) + "_" + str(t) + ".pgm " + str(n) + " " + args)
         result = proc.read().strip()
         proc.close()
