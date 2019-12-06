@@ -88,32 +88,8 @@ not_zero_param:
 solve_task1:
     ;TODO Task1
     call hardcode_revient
-    ; push 23
-    ; call xor_the_image
-    ; add esp, 4
-    
-
-    ; push 25
-    ; call print_image_line
-    ; add esp, 4
-    ; NEWLINE
-    NEWLINE
-    push 25
-    call revient_is_onLine
-    add esp, 4
-
-
-
+    call bruteforce_singlebyte_xor
     jmp done
-
-
-
-
-
-
-
-
-
 
 solve_task2:
     ; TODO Task2
@@ -144,7 +120,7 @@ done:
     ret
     
 
-hardcode_revient:
+hardcode_revient: ; aloc si hardcodez pe revient pe stiva
     enter 0, 0
 
     push 28
@@ -170,8 +146,9 @@ hardcode_revient:
     leave
     ret
 
-print_image_line:
+print_image_line:  ; aduce mesajul de pe linia lui revient
     enter 0, 0
+    pusha
     mov ebx, [ebp + 8] ; line
     mov eax, [img]
     mov edx, [img_width] ; lungime linie
@@ -189,34 +166,35 @@ print_image_line:
     mov ecx, 0
     mov ebx, [img_width]
 
-print_char_by_char:
-    push edx
-    mov eax, [img]
-    add eax,edx
+    print_char_by_char:
+        push edx
+        mov eax, [img]
+        add eax,edx
 
-    lea eax, [eax + 4 * ecx + 0]
-    mov edx, [eax]
+        lea eax, [eax + 4 * ecx + 0]
+        mov edx, [eax]
 
 
-    ; PRINT_UDEC 4, ecx
-    cmp edx, 0
-    je stop_print_char_by_char
-    PRINT_CHAR  edx
+        ; PRINT_UDEC 4, ecx
+        cmp edx, 0
+        je stop_print_char_by_char
+        PRINT_CHAR  edx
 
-    pop edx
-    inc ecx
-    cmp ecx, ebx
-    je stop_print_char_by_char
-    jmp print_char_by_char
-    leave
-    ret
+        pop edx
+        inc ecx
+        cmp ecx, ebx
+        je stop_print_char_by_char
+        jmp print_char_by_char
+        leave
+        ret
 
-stop_print_char_by_char:
-    pop edx
-    leave
-    ret
+    stop_print_char_by_char:
+        pop edx
+        popa
+        leave
+        ret
 
-xor_the_image:
+xor_the_image:  ; cripteaza imaginea cu o key data ca param
     enter 0, 0
     mov ebx, [ebp + 8] ; key of xor
 
@@ -227,70 +205,215 @@ xor_the_image:
     mov ecx, eax
 
     mov edx, 0
-xor_another_elem:
-    mov eax, [img]
-    lea eax, [eax + 4 * edx]
+    xor_another_elem:
+        mov eax, [img]
+        lea eax, [eax + 4 * edx]
 
-    push edx ; xor
-    push ecx
-    mov ecx, [eax]
-    xor ecx, ebx
-    mov [eax], ecx
-    pop ecx
-    pop edx
-    
-    inc edx
-    cmp edx, ecx
-    je stop_xor_another_elem
-    jmp xor_another_elem
+        push edx ; xor
+        push ecx
+        mov ecx, [eax]
+        xor ecx, ebx
+        mov [eax], ecx
+        pop ecx
+        pop edx
+        
+        inc edx
+        cmp edx, ecx
+        je stop_xor_another_elem
+        jmp xor_another_elem
 
-    leave
-    ret
+        leave
+        ret
 
 stop_xor_another_elem:
     leave
     ret
 
 
-revient_is_onLine:
+revient_is_onLine:  ; primeste param nr liniei si returneaza in edx daca e revient 
     enter 0, 0
+    push eax
+    push ebx
+    push ecx
+
     mov ebx, [ebp +8] ; linia
     mov eax, [img]
     mov edx, [img_width] ; lungime linie
 
     push eax
-    mov eax, ebx
-    mul edx
-    mov edx, eax 
-    mov eax, 4
-    mul edx
-    mov edx, eax
+        mov eax, ebx
+        mul edx
+        mov edx, eax 
+        mov eax, 4
+        mul edx
+        mov edx, eax
     pop eax
     add eax,edx ; eax inceput linie
 
+    mov ecx, 0
+    mov ebx, [img_width]
+    sub ebx, 6
 
-    push eax
-    call compare_with_revient
-    add eax, 4
+search_on_line_next_char:
+        push eax
+            push ecx
+                push eax
+                    mov eax, 4
+                    mul ecx
+                    mov ecx, eax
+                pop eax
+                add eax, ecx
+            pop ecx
 
-    leave
-    ret
+            push ecx
+                push eax
+                call compare_with_revient
+                add esp, 4
+            pop ecx
+        pop eax
 
 
-compare_with_revient: ; bool  strcmp(int * a, "revient") -> edx
+        cmp edx, 1
+        je true_revient_is_onLine
+        inc ecx
+        cmp ecx, ebx
+        je false_revient_is_onLine
+        jmp search_on_line_next_char
+
+
+    false_revient_is_onLine:
+        pop ecx
+        pop ebx
+        pop eax
+        mov edx, 0
+        leave
+        ret
+
+    true_revient_is_onLine:
+        pop ecx
+        pop ebx
+        pop eax
+        leave
+        ret
+
+
+compare_with_revient: ; bool  strcmp(char * a, "revient") -> edx
     enter 0, 0
-    mov edx, 1
+    push eax
+    push ebx
+    push ecx
 
     mov eax, [esp + 8] ;pointer catre inceput linie
     mov ebx, [revient]
+    mov ecx, 0
 
-    push eax
-    push ebx
-    mov ebx, [ebx + 0]
-    mov eax, [eax + 0]
+    check_next_letter:
+        push eax
+        push ebx
+            mov ebx, [ebx + ecx]
+            mov eax, [eax + ecx]
+            cmp ebx, eax
+            jne false_compare_with_revient
+        pop ebx
+        pop eax
+        add ecx, 4
+        
+        cmp ecx, 25
+        jg true_compare_with_revient
+        jmp check_next_letter
 
-    pop ebx
-    pop eax
-    
-    leave
-    ret
+
+    true_compare_with_revient:
+        pop ecx
+        pop ebx
+        pop eax
+        mov edx, 1
+        leave
+        ret
+
+    false_compare_with_revient:
+        pop ebx
+        pop eax
+
+        pop ecx
+        pop ebx
+        pop eax
+        mov edx, 0
+        leave
+        ret
+
+pos_revient_on_matrix:  ; fara param, aduce pozitia lui revient in imag daca este, altfel -1 (edx)
+    enter 0, 0    
+    push ecx
+    mov ecx, [img_height]
+    dec ecx
+
+
+    check_another_line:
+            push ecx
+                call revient_is_onLine
+            pop ecx
+
+            cmp edx, 1
+            je pos_found
+            dec ecx
+            cmp ecx, -1
+            je pos_not_found
+            jmp check_another_line
+
+
+    pos_not_found:
+        pop ecx
+        mov edx, -1
+        leave
+        ret
+
+    pos_found:
+        mov edx, ecx
+        pop ecx
+        leave
+        ret
+
+bruteforce_singlebyte_xor:
+    enter 0, 0
+
+        ; push 24
+        ; call xor_the_image
+        ; add esp, 4
+
+        ; call pos_revient_on_matrix
+        ; PRINT_DEC 4, edx
+
+    mov ecx, 255
+    try_anoother_key:
+        push ecx  ; criptez
+        call xor_the_image
+        pop ecx
+
+        call pos_revient_on_matrix ; caut revient
+        cmp edx, - 1
+        jne return_bruteforce_singlebyte_xor
+
+        push ecx  ; decriptez la loc
+        call xor_the_image
+        pop ecx
+
+        dec ecx
+        cmp ecx, -1
+        je return_bruteforce_singlebyte_xor
+
+
+
+        jmp try_anoother_key
+
+    return_bruteforce_singlebyte_xor:
+        push edx
+        call print_image_line
+        pop edx
+        NEWLINE
+        PRINT_UDEC 4, ecx
+        NEWLINE
+        PRINT_UDEC 4, edx
+        NEWLINE
+        leave
+        ret
