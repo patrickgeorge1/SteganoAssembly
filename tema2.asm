@@ -774,7 +774,7 @@ encrypt_a:
             mov [eax + 8], ebx
             mov ebx, 46
             mov [eax + 12], ebx
-            
+
             lea eax, [eax]
             mov [task2msj], eax
             mov DWORD[lenOfMsj], 4
@@ -834,6 +834,619 @@ encrypt_a:
             lea eax, [eax]
             mov [task2msj], eax
             mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_e:
+        pusha              ; hardcode letter
+            push 4
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 1
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_f:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+            mov ebx, 45
+            mov [eax + 8], ebx
+            mov ebx, 46
+            mov [eax + 12], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_g:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+
+    encrypt_h:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+            mov ebx, 46
+            mov [eax + 12], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_i:
+        pusha              ; hardcode letter
+            push 8
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 2
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_j:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 45
+            mov [eax + 8], ebx
+            mov ebx, 45
+            mov [eax + 12], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_k:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+            mov ebx, 45
+            mov [eax + 8], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_l:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+            mov ebx, 46
+            mov [eax + 12], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_m:
+        pusha              ; hardcode letter
+            push 8
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 2
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_n:
+        pusha              ; hardcode letter
+            push 2
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 2
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_o:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 45
+            mov [eax + 8], ebx
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_p:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 45
+            mov [eax + 8], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_q:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+            mov ebx, 45
+            mov [eax + 8], ebx
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_r:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_s:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+
+
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_t:
+        pusha              ; hardcode letter
+            push 4
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 1
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_u:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_v:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+
+    encrypt_w:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+
+    encrypt_x:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    
+    encrypt_y:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_z:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
         popa
             push eax
             call include_message_at_pos
