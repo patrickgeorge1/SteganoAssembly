@@ -619,7 +619,7 @@ morse_encrypt:
     mov edx, [ebp + 8]  ; msj
     mov ecx, [ebp + 12]  ; position
 
-                                                                            mov ecx, 0  ; sa stergi
+                                                                            ; mov ecx, 0  ; sa stergi
     push edx
     push eax
         mov eax, 4
@@ -636,27 +636,30 @@ morse_encrypt:
     ; NEWLINE
 
     xor ecx, ecx
-    ; repos:
-    ;     push  [edx + ecx]
-    ;     push eax
-    ;     call add_morse_letter
-    ;     add esp, 8
-        
-        ; push 32        ; spatiu dupa fiecare litera
-        ; push eax
-        ; call add_morse_letter
-        ; add esp, 8
-        
-    ;     inc ecx
-    ;     cmp byte[edx + ecx], 0
-    ;     jne repos
-
-
+    repos:
         push  DWORD[edx + ecx]
         push eax
         call add_morse_letter
         add esp, 8
+        
+        cmp byte[edx + ecx + 1], 0
+        je add_terminator
 
+        push 32        ; spatiu dupa fiecare litera
+        push eax
+        call add_morse_letter
+        add esp, 8
+        
+        inc ecx
+        cmp byte[edx + ecx], 0
+        jne repos
+
+
+        ; push  DWORD[edx + ecx]
+        ; push eax
+        ; call add_morse_letter
+        ; add esp, 8
+        add_terminator:
         mov DWORD[eax], 0         ; pun si terminator de sir
     leave
     ret
@@ -689,7 +692,7 @@ add_morse_letter:
     cmp ebx, 72 ; H
         je encrypt_h
     cmp ebx, 73 ; I
-        je encry4_i
+        je encrypt_i
     cmp ebx, 74 ; J
         je encrypt_j
     cmp ebx, 75 ; K
@@ -723,7 +726,7 @@ add_morse_letter:
     cmp ebx, 89 ; Y
         je encrypt_y
     cmp ebx, 90 ; Z
-        je encrypt_y
+        je encrypt_z
     cmp ebx, 32 ; blank
         je encrypt_blank
     cmp ebx, 44 ; comma
@@ -745,6 +748,7 @@ encrypt_a:
         mov [eax], ebx
         mov ebx, 45
         mov [eax + 4], ebx
+
         lea eax, [eax]
         mov [task2msj], eax
         mov DWORD[lenOfMsj], 2
@@ -829,7 +833,7 @@ encrypt_a:
             mov ebx, 46
             mov [eax + 4], ebx
             mov ebx, 46
-            mov [eax + 12], ebx
+            mov [eax + 8], ebx
 
             lea eax, [eax]
             mov [task2msj], eax
@@ -1093,7 +1097,7 @@ encrypt_a:
 
     encrypt_n:
         pusha              ; hardcode letter
-            push 2
+            push 8
             call malloc
             add esp, 4
             
@@ -1158,7 +1162,7 @@ encrypt_a:
             mov ebx, 45
             mov [eax + 8], ebx
             mov ebx, 46
-            mov [eax + 8], ebx
+            mov [eax + 12], ebx
 
 
             lea eax, [eax]
@@ -1188,7 +1192,7 @@ encrypt_a:
             mov ebx, 46
             mov [eax + 8], ebx
             mov ebx, 45
-            mov [eax + 8], ebx
+            mov [eax + 12], ebx
 
 
             lea eax, [eax]
@@ -1294,9 +1298,9 @@ encrypt_a:
             mov ebx, 46
             mov [eax], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 4], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 8], ebx
 
             lea eax, [eax]
             mov [task2msj], eax
@@ -1321,11 +1325,11 @@ encrypt_a:
             mov ebx, 46
             mov [eax], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 4], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 8], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 12], ebx
 
             lea eax, [eax]
             mov [task2msj], eax
@@ -1351,9 +1355,9 @@ encrypt_a:
             mov ebx, 46
             mov [eax], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 4], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 8], ebx
 
             lea eax, [eax]
             mov [task2msj], eax
@@ -1379,11 +1383,11 @@ encrypt_a:
             mov ebx, 45
             mov [eax], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 4], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 8], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 12], ebx
 
             lea eax, [eax]
             mov [task2msj], eax
@@ -1409,11 +1413,11 @@ encrypt_a:
             mov ebx, 45
             mov [eax], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 4], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 8], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 12], ebx
 
             lea eax, [eax]
             mov [task2msj], eax
@@ -1438,15 +1442,73 @@ encrypt_a:
             mov ebx, 45
             mov [eax], ebx
             mov ebx, 45
-            mov [eax], ebx
+            mov [eax + 4], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 8], ebx
             mov ebx, 46
-            mov [eax], ebx
+            mov [eax + 12], ebx
 
             lea eax, [eax]
             mov [task2msj], eax
             mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_comma:
+        pusha              ; hardcode letter
+            push 24
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 45
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+            mov ebx, 46
+            mov [eax + 12], ebx
+            mov ebx, 45
+            mov [eax + 16], ebx
+            mov ebx, 45
+            mov [eax + 20], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 6
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+
+    
+    encrypt_blank:
+        pusha              ; hardcode letter
+            push 1
+            call malloc
+            add esp, 4
+            
+            mov ebx, 32
+            mov [eax], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 1
         popa
             push eax
             call include_message_at_pos
