@@ -17,3 +17,6 @@ task1: clean build
 
 task2: clean build
 	./tema2 inputs/task2_2.pgm 2
+
+task3: clean build
+	./tema2 inputs/task3_1.pgm 3 DRAGI,TOVARASI,SI,CONCETATENI,AZI,SUNTEM,AICI,SA,SARBATORIM 13147

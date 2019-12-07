@@ -116,57 +116,41 @@ solve_task2:
     pop edx
     inc edx
 
-
-                                                                ; push DWORD[img_height]
-                                                                ; push DWORD[img_width]
-                                                                ; push DWORD[img]
-                                                                ; call print_image
-                                                                ; add esp, 12
-
-  
-                                                            ; mov ecx, 48
-                                                            ; push ecx
-                                                            ; call xor_the_image
-                                                            ; add esp, 4
-
-                                                                ; push DWORD[img_height]
-                                                                ; push DWORD[img_width]
-                                                                ; push DWORD[img]
-                                                                ; call print_image
-                                                                ; add esp, 12
-
-
     mov DWORD[lenOfMsj], 28
     push edx
     call include_message_at_line
     add esp, 4
-
-    ;                                                             ; NEWLINE
-    ;                                                             ; NEWLINE
-    ;                                                             ; NEWLINE
-
-                                                                ; push DWORD[img_height]
-                                                                ; push DWORD[img_width]
-                                                                ; push DWORD[img]
-                                                                ; call print_image
-                                                                ; add esp, 12
     
     push ecx
     call xor_the_image
     pop ecx
 
-                                                                push DWORD[img_height]
-                                                                push DWORD[img_width]
-                                                                push DWORD[img]
-                                                                call print_image
-                                                                add esp, 12
+    push DWORD[img_height]
+    push DWORD[img_width]
+    push DWORD[img]
+    call print_image
+    add esp, 12
 
 
     call free_task2msj
     call free_revient
     jmp done
+
 solve_task3:    
     ; TODO Task3
+    mov eax, [ebp  + 12]
+    mov ebx, [eax + 12] ; mesaj 
+    mov ecx, [eax + 16] ; nr
+
+    push ecx
+    call atoi  ; eax = position
+    add esp, 4
+
+    push eax
+    push ebx
+    call morse_encrypt
+    add esp, 4
+
     jmp done
 solve_task4:
     ; TODO Task4
@@ -624,3 +608,95 @@ include_message_at_line:
     popa
     leave
     ret
+
+morse_encrypt:
+    enter 0, 0
+    mov edx, [ebp + 8]  ; msj
+    mov ecx, [ebp + 12]  ; position
+
+    push edx
+    push eax
+        mov eax, 4
+        mul ecx
+        mov ecx, eax
+    pop eax
+    pop edx
+
+    mov eax, [img]
+    add eax, ecx ; points where should i introduce the first char
+
+    ; PRINT_UDEC 4, [eax]
+    ; NEWLINE
+    ; NEWLINE
+
+    xor ecx, ecx
+    ; repos:
+    ;     push  [edx + ecx]
+    ;     push eax
+    ;     call add_morse_letter
+    ;     add esp, 8
+    
+    ;     inc ecx
+    ;     cmp byte[edx + ecx], 0
+    ;     jne repos
+
+
+        push  DWORD[edx + ecx]
+        push eax
+        call add_morse_letter
+        add esp, 8
+        
+    leave
+    ret
+
+
+add_morse_letter:
+    enter 0, 0
+    push ebx
+    push ecx
+    push edx
+    xor ebx, ebx
+    mov eax, [ebp + 8]
+    mov bl, [ebp + 12]
+
+    cmp ebx, 68 ; A
+        je encrypt_a
+    
+
+    return_after_morse_encrypt:
+    push DWORD[img_height]
+    push DWORD[img_width]
+    push DWORD[img]
+    call print_image
+    add esp, 12
+
+    pop edx
+    pop ecx
+    pop ebx
+    leave
+    ret
+
+encrypt_a:
+    pusha              ; hardcode letter
+        push 8
+        call malloc
+        add esp, 4
+        
+        mov ebx, 46
+        mov [eax], ebx
+        mov ebx, 45
+        mov [eax + 4], ebx
+        lea eax, [eax]
+        mov [task2msj], eax
+        mov DWORD[lenOfMsj], 2
+    popa
+
+    push eax
+    call include_message_at_pos
+    add esp, 4
+
+    push DWORD[task2msj] ; FREE meomory
+    call free
+    add esp, 4 
+
+    jmp return_after_morse_encrypt
