@@ -151,6 +151,11 @@ solve_task3:
     call morse_encrypt
     add esp, 4
 
+                                                                                    push DWORD[img_height]
+                                                                                push DWORD[img_width]
+                                                                                push DWORD[img]
+                                                                                call print_image
+                                                                                add esp, 12
     jmp done
 solve_task4:
     ; TODO Task4
@@ -614,6 +619,7 @@ morse_encrypt:
     mov edx, [ebp + 8]  ; msj
     mov ecx, [ebp + 12]  ; position
 
+                                                                            mov ecx, 0  ; sa stergi
     push edx
     push eax
         mov eax, 4
@@ -635,7 +641,12 @@ morse_encrypt:
     ;     push eax
     ;     call add_morse_letter
     ;     add esp, 8
-    
+        
+        ; push 32        ; spatiu dupa fiecare litera
+        ; push eax
+        ; call add_morse_letter
+        ; add esp, 8
+        
     ;     inc ecx
     ;     cmp byte[edx + ecx], 0
     ;     jne repos
@@ -645,7 +656,8 @@ morse_encrypt:
         push eax
         call add_morse_letter
         add esp, 8
-        
+
+        mov DWORD[eax], 0         ; pun si terminator de sir
     leave
     ret
 
@@ -659,17 +671,64 @@ add_morse_letter:
     mov eax, [ebp + 8]
     mov bl, [ebp + 12]
 
-    cmp ebx, 68 ; A
+
+    cmp ebx, 65 ; A
         je encrypt_a
-    
-
+    cmp ebx, 66 ; B
+        je encrypt_b
+    cmp ebx, 67 ; C
+        je encrypt_c
+    cmp ebx, 68 ; D
+        je encrypt_d
+    cmp ebx, 69 ; E
+        je encrypt_e
+    cmp ebx, 70 ; F
+        je encrypt_f
+    cmp ebx, 71 ; G
+        je encrypt_g
+    cmp ebx, 72 ; H
+        je encrypt_h
+    cmp ebx, 73 ; I
+        je encry4_i
+    cmp ebx, 74 ; J
+        je encrypt_j
+    cmp ebx, 75 ; K
+        je encrypt_k
+    cmp ebx, 76 ; L
+        je encrypt_l
+    cmp ebx, 77 ; M
+        je encrypt_m
+    cmp ebx, 78 ; N
+        je encrypt_n
+    cmp ebx, 79 ; O
+        je encrypt_o
+    cmp ebx, 80 ; P
+        je encrypt_p
+    cmp ebx, 81 ; Q
+        je encrypt_q
+    cmp ebx, 82 ; R
+        je encrypt_r
+    cmp ebx, 83 ; S
+        je encrypt_s
+    cmp ebx, 84 ; T
+        je encrypt_t
+    cmp ebx, 85 ; U
+        je encrypt_u
+    cmp ebx, 86 ; V
+        je encrypt_v
+    cmp ebx, 87 ; W
+        je encrypt_w
+    cmp ebx, 88 ; X
+        je encrypt_x
+    cmp ebx, 89 ; Y
+        je encrypt_y
+    cmp ebx, 90 ; Z
+        je encrypt_y
+    cmp ebx, 32 ; blank
+        je encrypt_blank
+    cmp ebx, 44 ; comma
+        je encrypt_comma
     return_after_morse_encrypt:
-    push DWORD[img_height]
-    push DWORD[img_width]
-    push DWORD[img]
-    call print_image
-    add esp, 12
-
     pop edx
     pop ecx
     pop ebx
@@ -690,13 +749,98 @@ encrypt_a:
         mov [task2msj], eax
         mov DWORD[lenOfMsj], 2
     popa
-
+        push eax
+        call include_message_at_pos
+        add esp, 4
     push eax
-    call include_message_at_pos
-    add esp, 4
-
     push DWORD[task2msj] ; FREE meomory
     call free
     add esp, 4 
-
+    pop eax
     jmp return_after_morse_encrypt
+
+
+    encrypt_b:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 8], ebx
+            mov ebx, 46
+            mov [eax + 12], ebx
+            
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_c:
+        pusha              ; hardcode letter
+            push 16
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+            mov ebx, 45
+            mov [eax + 8], ebx
+            mov ebx, 46
+            mov [eax + 12], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 4
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
+
+    encrypt_d:
+        pusha              ; hardcode letter
+            push 12
+            call malloc
+            add esp, 4
+            
+            mov ebx, 45
+            mov [eax], ebx
+            mov ebx, 46
+            mov [eax + 4], ebx
+            mov ebx, 46
+            mov [eax + 12], ebx
+
+            lea eax, [eax]
+            mov [task2msj], eax
+            mov DWORD[lenOfMsj], 3
+        popa
+            push eax
+            call include_message_at_pos
+            add esp, 4
+        push eax
+        push DWORD[task2msj] ; FREE meomory
+        call free
+        add esp, 4 
+        pop eax
+        jmp return_after_morse_encrypt
