@@ -1,0 +1,55 @@
+---------------------------------------------------------------------------------------------------
+
+Task 1:
+	hardcode_revient  - hardcodeaza la .bss [revient], codificarea ascii a lui revient
+	free_revient 				- elibereaza [revient]
+
+	compare_with_revient 		- primeste un pointer catre un pixel
+						   		  si compara urmatoarele 7 caractere cu [revient]
+						   		  si returneaza in edx 1/0
+
+	revient_is_onLine 			- primeste ca parametru nr liniei din matrice,
+								  apeleaza compare_with_revient pe fiecare
+
+	pos_revient_on_matrix 		- aplica revient_is_onLine pe toate liniile matricei,
+								  si returneaza in edx -1 daca nu s a gasit revient
+								  in matrice sau nr liniei
+
+	xor_the_image 				- face xor pe toate elementele matricei cu key (parametru)
+
+	print_image_line 			- primeste ca prametru nr liniei, si afiseaza pana la 0
+
+	bruteforce_singlebyte_xor   - 1.)face xor_the_image
+								  2.) daca pos_revient_on_matrix == -1 revine la 1.)
+								  3.) print_image_line
+
+	/* apelez bruteforce_singlebyte_xor si printez linia, cheia, si apelez print_image_line */
+
+---------------------------------------------------------------------------------------------------
+
+Task 2:
+	hardcode_task2msj 			- hardcodez la .bss [task2msj] mesajul de la task 2
+
+	free_task2msj 				- dau free la [task2msj]
+
+	transform_key 				- primeste ca parametru pe key si il transforma dupa formula
+
+	include_message_at_line 	- primeste ca parametru nr liniei,
+								  si include in imagine messajul de la [task2msj]
+
+	/* apelez, bruteforce_singlebyte_xor, vad la ce linie este revient, fac un pointer catre
+	   linia urmatoare si apelez include_message_at_line, dupa vad vechea cheie si apelez
+	   transform_key si dupa asta apelez xor_the_image si printez */
+
+---------------------------------------------------------------------------------------------------
+
+
+Task 3:
+	encrypt_[a...z] 			- hardcodeaza pe [task2msj] cu cod morse corespunzator
+								  apeleaza hardcode_task2msj
+								  elibereaza pe [task2msj]
+
+	morse_encrypt				- hardcodeaza caracter cu caracter mesajul apeland 
+								  encrypt_[a...z]
+
+	/* iau argumentele din linia de comanda si apelez morse_encrypt */
